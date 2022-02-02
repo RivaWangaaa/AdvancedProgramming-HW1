@@ -6,7 +6,7 @@ using UnityEngine;
 public class AIManager
 {
     public List<GameObject> AIs = new List<GameObject>();
-    public float aiMoveSpeed = 0.1f;
+    public float aiMoveSpeed = 0.01f;
 
     private void Awake()
     {
