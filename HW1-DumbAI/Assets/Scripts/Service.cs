@@ -8,6 +8,7 @@ public class Service
 {
     public static AIManager AIManagerInGame;
     public static ItemManager ItemManagerInGame;
+    public static GameManager GameManagerInGame;
     public static void InitializeServices()
     {
         AIManagerInGame = new AIManager();

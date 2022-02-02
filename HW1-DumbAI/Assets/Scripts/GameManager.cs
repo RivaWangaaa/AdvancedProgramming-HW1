@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,27 +14,43 @@ public class GameManager : MonoBehaviour
     
     public int itemCount = 3;
 
-    public AI newAI;
-    
+    private void Awake()
+    {
+        Service.GameManagerInGame = this;
+        Service.InitializeServices();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        newAI = new AI(aiObj);
-        
+
         for (int i = 0; i < aiCount; i++)
         {
             Vector3 randomPos = new Vector3(Random.Range(-10.0f, 10.0f), 1.0f, Random.Range(-10.0f, 10.0f));
-            GameObject thisAIObj = Instantiate(newAI.aiGameObject, randomPos, Quaternion.identity);
-            newAI.aiGameObject = thisAIObj;
-            Service.AIManagerInGame.Creation(newAI);
+            GameObject thisAIObj = Instantiate<GameObject>(aiObj, randomPos, Quaternion.identity);
+            if (thisAIObj != null)
+            {
+                Service.AIManagerInGame.Creation(thisAIObj);
+            }
+            else
+            {
+                Debug.Log("AI object is null");
+            }
         }
         
         for (int i = 0; i < itemCount; i++)
         {
             Vector3 randomPos = new Vector3(Random.Range(-10.0f, 10.0f), 1.0f, Random.Range(-10.0f, 10.0f));
             GameObject thisItemObj = Instantiate(itemObj, randomPos, Quaternion.identity);
-            Service.ItemManagerInGame.Creation(itemObj);
+            Service.ItemManagerInGame.Creation(thisItemObj);
         }
     }
-    
+
+    private void Update()
+    {
+        foreach (var aiInstance in Service.AIManagerInGame.AIs)
+        {
+            Service.AIManagerInGame.Updating(aiInstance);
+        }
+    }
 }
