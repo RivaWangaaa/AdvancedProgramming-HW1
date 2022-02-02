@@ -3,24 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AI : MonoBehaviour
+public class AI
 {
-    public GameObject aiObject;
-    public Rigidbody aiRigidbody;
+    public GameObject aiGameObject;
 
-    private void Start()
-    {
-        aiRigidbody = this.GetComponent<Rigidbody>();
-    }
 
-    public void UpdateManually()
+    public AI(GameObject aiGameObject)
     {
-        
+        this.aiGameObject = aiGameObject;
     }
-
-    public void Move()
-    {
-        
-    }
-    
 }
