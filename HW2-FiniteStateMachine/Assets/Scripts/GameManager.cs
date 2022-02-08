@@ -9,8 +9,9 @@ public class GameManager : MonoBehaviour
     public GameObject aiObj;
 
     public GameObject itemObj;
-
-    public int itemCount = 3;
+    
+    private int aiCount = 2;
+    private int itemCount = 15;
 
     private void Awake()
     {
@@ -21,7 +22,34 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Service.AIManagerInGame.Creation(aiObj);
+        for (int i = 0; i < aiCount; i++)
+        {
+            Vector3 randomPos = new Vector3(Random.Range(-10.0f, 10.0f), 1.0f, Random.Range(-10.0f, 10.0f));
+            GameObject thisAIObj = Instantiate(aiObj, randomPos, Quaternion.identity);
+            if (thisAIObj != null)
+            {
+                Service.AIManagerInGame.Creation(aiObj);
+            }
+            else
+            {
+                Debug.Log("AI object is null");
+            }
+        }
+        
+        for (int a = 0; a < itemCount; a++)
+        {
+            Vector3 randomPos = new Vector3(Random.Range(-10.0f, 10.0f), 1.0f, Random.Range(-10.0f, 10.0f));
+            GameObject thisItem = Instantiate(itemObj, randomPos, Quaternion.identity);
+            Service.ItemManagerInGame.Creation(thisItem);
+            if (thisItem != null)
+            {
+            }
+            else
+            {
+                Debug.Log("Item object is null");
+            }
+        }
+        Service.ItemManagerInGame.Creation(itemObj);
         
     }
 
