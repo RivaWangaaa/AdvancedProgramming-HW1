@@ -31,9 +31,12 @@ public class AIManager
     //AI Move towards the closest item
     public void Updating(GameObject aiObj)
     {
-
+        if (Service.ItemManagerInGame.Items.Count != 0)
+        {
             aiObj.transform.position = Vector3.MoveTowards(aiObj.transform.position,
                 Tracking(aiObj).position, aiMoveSpeed);
+        }
+
     }
 
     //Target the closest item from ai
@@ -62,5 +65,14 @@ public class AIManager
         }
 
         return closestPos;
+    }
+    
+    public void Destroy()
+    {
+        foreach (var ai in AIs)
+        {
+            UnityEngine.Object.Destroy(ai.Key.gameObject);
+            AIs.Remove(ai.Key);
+        }
     }
 }

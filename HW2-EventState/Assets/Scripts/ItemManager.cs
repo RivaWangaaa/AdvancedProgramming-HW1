@@ -16,27 +16,24 @@ public class ItemManager
    {
       Service.ItemManagerInGame = this;
    }
+   
 
-   //Call this in GameManager Start()
-   public void StartManually()
-   {
-      Service.EventManagerInGame.Register<Event_GoalScored>(AddTeamScore);
-      Service.EventManagerInGame.Register<Event_GameStarted>(OnGameStart);
-   }
-
-   //Call this in GameManager Update()
+   //Call this in GameManager State_InGame Update()
    public void UpdateManually()
    {
-      timer += Time.deltaTime;
 
       if (timer >= timeLimit)
       {
          Service.EventManagerInGame.Fire(new Event_GameTimedOut(blueScore, redScore));
       }
+      else
+      {
+         timer += Time.deltaTime;
+      }
 
-      Service.GameManagerInGame.blueScoreText.text = "Blue Team Score: " + blueScore;
-      Service.GameManagerInGame.redScoreText.text = "Red Team Score: " + redScore;
-      Service.GameManagerInGame.timerText.text = ((int) (timeLimit - timer)).ToString() + " secs Left";
+      Service.UIManagerInGame.blueScoreText.text = "Blue Team Score: " + blueScore;
+      Service.UIManagerInGame.redScoreText.text = "Red Team Score: " + redScore;
+      Service.UIManagerInGame.timerText.text = ((int) (timeLimit - timer)).ToString() + " secs Left";
    }
    
    
@@ -45,13 +42,7 @@ public class ItemManager
       Items.Add(itemObj);
    }
 
-   public void Destroy()
-   {
-      Service.EventManagerInGame.Unregister<Event_GoalScored>(AddTeamScore);
-      Service.EventManagerInGame.Unregister<Event_GameStarted>(OnGameStart);
-   }
-   
-   private void OnGameStart(AGPEvent e)
+   public void OnGameStart(AGPEvent e)
    {
       timer = 0;
       blueScore = 0;
@@ -59,7 +50,7 @@ public class ItemManager
       timeLimit = GameManager.Setting_TimeLimit;
    }
 
-   private void AddTeamScore(AGPEvent e)
+   public void AddTeamScore(AGPEvent e)
    {
       var goalScoredEvent = (Event_GoalScored) e;
       if (goalScoredEvent.teamColorScored == "Blue")
@@ -73,6 +64,11 @@ public class ItemManager
          Debug.Log("Red+1! Red Score: " + redScore);
       }
          
+   }
+   
+   public void OnGameTimedOut(AGPEvent e)
+   {
+      Service.GameManagerInGame._fsm.TransitionTo<GameManager.State_GameOver>();
    }
 
 }

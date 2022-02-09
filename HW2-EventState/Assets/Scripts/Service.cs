@@ -10,12 +10,14 @@ public class Service
     public static ItemManager ItemManagerInGame;
     public static GameManager GameManagerInGame;
     public static EventManager EventManagerInGame;
+    public static UIManager UIManagerInGame;
     public static void InitializeServices()
     {
         AIManagerInGame = new AIManager();
         ItemManagerInGame = new ItemManager();
         EventManagerInGame = new EventManager();
     }
+    
 
 
 }
