@@ -9,6 +9,20 @@ public class Item : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
+            if (Service.AIManagerInGame.AIs.ContainsKey(collision.gameObject))
+            {
+                string value = Service.AIManagerInGame.AIs[collision.gameObject];
+                if (value == "Blue")
+                {
+                    Debug.Log("Blue team!");
+                    Service.EventManagerInGame.Fire(new Event_GoalScored(value));
+                }
+                else
+                {
+                    Debug.Log("Red team!");
+                    Service.EventManagerInGame.Fire(new Event_GoalScored(value));
+                }
+            }
             Service.ItemManagerInGame.Items.Remove(gameObject);
             Destroy(gameObject);
         }

@@ -82,9 +82,9 @@ public abstract class AGPEvent
 
 public class Event_GoalScored : AGPEvent
 {
-	public readonly int teamColorScored;
+	public readonly string teamColorScored;
 	
-	public Event_GoalScored(int teamColorScored)
+	public Event_GoalScored(string teamColorScored)
 	{
 		this.teamColorScored = teamColorScored;
 	}

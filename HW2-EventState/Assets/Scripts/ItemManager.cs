@@ -17,12 +17,14 @@ public class ItemManager
       Service.ItemManagerInGame = this;
    }
 
+   //Call this in GameManager Start()
    public void StartManually()
    {
       Service.EventManagerInGame.Register<Event_GoalScored>(AddTeamScore);
       Service.EventManagerInGame.Register<Event_GameStarted>(OnGameStart);
    }
 
+   //Call this in GameManager Update()
    public void UpdateManually()
    {
       timer += Time.deltaTime;
@@ -31,7 +33,13 @@ public class ItemManager
       {
          Service.EventManagerInGame.Fire(new Event_GameTimedOut(blueScore, redScore));
       }
+
+      Service.GameManagerInGame.blueScoreText.text = "Blue Team Score: " + blueScore;
+      Service.GameManagerInGame.redScoreText.text = "Red Team Score: " + redScore;
+      Service.GameManagerInGame.timerText.text = ((int) (timeLimit - timer)).ToString() + " secs Left";
    }
+   
+   
    public void Creation(GameObject itemObj)
    {
       Items.Add(itemObj);
@@ -53,8 +61,18 @@ public class ItemManager
 
    private void AddTeamScore(AGPEvent e)
    {
+      var goalScoredEvent = (Event_GoalScored) e;
+      if (goalScoredEvent.teamColorScored == "Blue")
+      {
          blueScore++;
-         redScore++;
+         Debug.Log("Blue+1! Blue Score: " + blueScore);
+      }
+      else
+      {
+         redScore++; 
+         Debug.Log("Red+1! Red Score: " + redScore);
+      }
+         
    }
 
 }

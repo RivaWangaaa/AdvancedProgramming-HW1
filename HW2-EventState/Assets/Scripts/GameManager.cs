@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
@@ -19,6 +20,8 @@ public class GameManager : MonoBehaviour
     public Material redMaterial;
     public Material blueMaterial;
     
+    //UI
+    public Text redScoreText, blueScoreText, timerText;
     
 
     private void Awake()
@@ -30,7 +33,8 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        Service.ItemManagerInGame.StartManually();
+        
         for (int i = 0; i < aiCount; i++)
         {
             Vector3 randomPos = new Vector3(Random.Range(-10.0f, 10.0f), 1.0f, Random.Range(-10.0f, 10.0f));
@@ -59,5 +63,7 @@ public class GameManager : MonoBehaviour
         {
             Service.AIManagerInGame.Updating(KeyValuePair.Key);
         }
+        
+        Service.ItemManagerInGame.UpdateManually();
     }
 }
